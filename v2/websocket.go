@@ -3,6 +3,7 @@ package binance
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -40,16 +41,23 @@ var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (don
 			return nil, nil, fmt.Errorf("unable to parse ProxyURLForWsHandshakeOverride (%s): %s", ProxyURLForWsHandshakeOverride, e)
 		}
 		Dialer.Proxy = func(req *http.Request) (*url.URL, error) {
+			log.Printf("using proxy %s for websocket handshake", proxyURL)
 			return proxyURL, nil
 		}
 	}
 
 	c, resp, err := Dialer.Dial(cfg.Endpoint, nil)
 	if err != nil {
-		defer resp.Body.Close()
-		byts, e := ioutil.ReadAll(resp.Body)
-		if e != nil {
-			return nil, nil, fmt.Errorf("unable to read response from fialed dial call, error: %s, original dialer error: %s", e, err)
+		byts := []byte{}
+		// check resp and resp.Body as they can be nil
+		if resp != nil && resp.Body != nil {
+			defer resp.Body.Close()
+
+			var e error
+			byts, e = ioutil.ReadAll(resp.Body)
+			if e != nil {
+				return nil, nil, fmt.Errorf("unable to read response from fialed dial call, error: %s, original dialer error: %s", e, err)
+			}
 		}
 		return nil, nil, fmt.Errorf("response from failed Dial call: %v, orignial dialer error: %s", string(byts), err)
 	}
