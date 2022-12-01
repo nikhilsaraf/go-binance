@@ -1,8 +1,6 @@
 package binance
 
 import (
-	"fmt"
-	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -33,14 +31,9 @@ var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (don
 		EnableCompression: false,
 	}
 
-	c, resp, err := Dialer.Dial(cfg.Endpoint, nil)
+	c, _, err := Dialer.Dial(cfg.Endpoint, nil)
 	if err != nil {
-		defer resp.Body.Close()
-		byts, e := ioutil.ReadAll(resp.Body)
-		if e != nil {
-			return nil, nil, fmt.Errorf("unable to read response from fialed dial call, error: %s, original dialer error: %s", e, err)
-		}
-		return nil, nil, fmt.Errorf("response from failed Dial call: %v, orignial dialer error: %s", string(byts), err)
+		return nil, nil, err
 	}
 	doneC = make(chan struct{})
 	stopC = make(chan struct{})
