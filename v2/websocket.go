@@ -41,7 +41,7 @@ var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (don
 			return nil, nil, fmt.Errorf("unable to parse ProxyURLForWsHandshakeOverride (%s): %s", ProxyURLForWsHandshakeOverride, e)
 		}
 		Dialer.Proxy = func(req *http.Request) (*url.URL, error) {
-			log.Printf("using proxy %s for websocket handshake", proxyURL)
+			log.Printf("using proxy '%s' for websocket handshake for requestURL = %s", proxyURL, req.URL.String())
 			return proxyURL, nil
 		}
 	}
