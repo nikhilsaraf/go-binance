@@ -1,6 +1,8 @@
 package binance
 
 import (
+	"fmt"
+	"io/ioutil"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -24,9 +26,14 @@ func newWsConfig(endpoint string) *WsConfig {
 }
 
 var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
-	c, _, err := websocket.DefaultDialer.Dial(cfg.Endpoint, nil)
+	c, resp, err := websocket.DefaultDialer.Dial(cfg.Endpoint, nil)
 	if err != nil {
-		return nil, nil, err
+		defer resp.Body.Close()
+		byts, e := ioutil.ReadAll(resp.Body)
+		if e != nil {
+			return nil, nil, fmt.Errorf("unable to read response from fialed dial call, error: %s, original dialer error: %s", e, err)
+		}
+		return nil, nil, fmt.Errorf("response from failed Dial call: %v, orignial dialer error: %s", string(byts), err)
 	}
 	doneC = make(chan struct{})
 	stopC = make(chan struct{})
