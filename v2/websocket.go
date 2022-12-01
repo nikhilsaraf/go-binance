@@ -3,10 +3,15 @@ package binance
 import (
 	"fmt"
 	"io/ioutil"
+	"net/http"
+	"net/url"
 	"time"
 
 	"github.com/gorilla/websocket"
 )
+
+// ProxyURLForWsHandshakeOverride is a function that can be used to override the proxy URL
+var ProxyURLForWsHandshakeOverride = ""
 
 // WsHandler handle raw websocket message
 type WsHandler func(message []byte)
@@ -26,7 +31,20 @@ func newWsConfig(endpoint string) *WsConfig {
 }
 
 var wsServe = func(cfg *WsConfig, handler WsHandler, errHandler ErrHandler) (doneC, stopC chan struct{}, err error) {
-	c, resp, err := websocket.DefaultDialer.Dial(cfg.Endpoint, nil)
+	Dialer := websocket.Dialer{
+		Proxy: http.ProxyFromEnvironment,
+	}
+	if ProxyURLForWsHandshakeOverride != "" {
+		proxyURL, e := url.Parse(ProxyURLForWsHandshakeOverride)
+		if e != nil {
+			return nil, nil, fmt.Errorf("unable to parse ProxyURLForWsHandshakeOverride (%s): %s", ProxyURLForWsHandshakeOverride, e)
+		}
+		Dialer.Proxy = func(req *http.Request) (*url.URL, error) {
+			return proxyURL, nil
+		}
+	}
+
+	c, resp, err := Dialer.Dial(cfg.Endpoint, nil)
 	if err != nil {
 		defer resp.Body.Close()
 		byts, e := ioutil.ReadAll(resp.Body)
