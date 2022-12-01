@@ -221,6 +221,10 @@ func NewProxiedClient(apiKey, secretKey, proxyUrl string) *Client {
 		Proxy:           http.ProxyURL(proxy),
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
+
+	ProxyURLForWsHandshakeOverride = proxyUrl
+	log.Printf("set ProxyURLForWsHandshakeOverride to '%s'", proxyUrl)
+
 	return &Client{
 		APIKey:    apiKey,
 		SecretKey: secretKey,
