@@ -147,7 +147,7 @@ func (s *ListDepositsLocalEntityService) Do(ctx context.Context) (res []*Deposit
 // DepositLocalEntity represents a single DepositLocalEntity entry.
 type DepositLocalEntity struct {
 	TrID                 int64   `json:"trId"`
-	TranID               string  `json:"tranId"`
+	TranID               int64   `json:"tranId"`
 	Amount               string  `json:"amount"`
 	Coin                 string  `json:"coin"`
 	Network              string  `json:"network"`
