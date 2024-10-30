@@ -185,7 +185,7 @@ func NewClient(apiKey, secretKey string) *Client {
 	}
 }
 
-//NewProxiedClient passing a proxy url
+// NewProxiedClient passing a proxy url
 func NewProxiedClient(apiKey, secretKey, proxyUrl string) *Client {
 	proxy, err := url.Parse(proxyUrl)
 	if err != nil {
@@ -460,6 +460,11 @@ func (c *Client) NewHistoricalTradesService() *HistoricalTradesService {
 // NewListDepositsService init listing deposits service
 func (c *Client) NewListDepositsService() *ListDepositsService {
 	return &ListDepositsService{c: c}
+}
+
+// NewListDepositsLocalEntityService init listing deposits service
+func (c *Client) NewListDepositsLocalEntityService() *ListDepositsLocalEntityService {
+	return &ListDepositsLocalEntityService{c: c}
 }
 
 // NewGetDepositAddressService init getting deposit address service
