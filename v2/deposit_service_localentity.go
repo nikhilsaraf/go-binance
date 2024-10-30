@@ -146,22 +146,22 @@ func (s *ListDepositsLocalEntityService) Do(ctx context.Context) (res []*Deposit
 
 // DepositLocalEntity represents a single DepositLocalEntity entry.
 type DepositLocalEntity struct {
-	TrID                 int64   `json:"trId"`
-	TranID               int64   `json:"tranId"`
-	Amount               string  `json:"amount"`
-	Coin                 string  `json:"coin"`
-	Network              string  `json:"network"`
-	Status               int     `json:"status"`
-	TravelRuleStatus     int     `json:"travelRuleStatus"`
-	DepositStatus        int     `json:"depositStatus"`
-	Address              string  `json:"address"`
-	AddressTag           string  `json:"addressTag"`
-	TxID                 string  `json:"txId"`
-	InsertTime           int64   `json:"insertTime"`
-	TransferType         int64   `json:"transferType"`
-	ConfirmTimes         string  `json:"confirmTimes"`
-	RequireQuestionnaire bool    `json:"requireQuestionnaire"`
-	Questionnaire        *string `json:"questionnaire"`
+	TrID                 int64       `json:"trId"`
+	TranID               int64       `json:"tranId"`
+	Amount               string      `json:"amount"`
+	Coin                 string      `json:"coin"`
+	Network              string      `json:"network"`
+	Status               int         `json:"status"`
+	TravelRuleStatus     int         `json:"travelRuleStatus"`
+	DepositStatus        int         `json:"depositStatus"`
+	Address              string      `json:"address"`
+	AddressTag           string      `json:"addressTag"`
+	TxID                 string      `json:"txId"`
+	InsertTime           int64       `json:"insertTime"`
+	TransferType         int64       `json:"transferType"`
+	ConfirmTimes         string      `json:"confirmTimes"`
+	RequireQuestionnaire bool        `json:"requireQuestionnaire"`
+	Questionnaire        interface{} `json:"questionnaire"`
 }
 
 // SubmitDepositQuestionnaireService submits the deposit questionnaire
