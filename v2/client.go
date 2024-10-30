@@ -467,6 +467,11 @@ func (c *Client) NewListDepositsLocalEntityService() *ListDepositsLocalEntitySer
 	return &ListDepositsLocalEntityService{c: c}
 }
 
+// NewSubmitDepositQuestionnaireService init listing deposits service
+func (c *Client) NewSubmitDepositQuestionnaireService() *SubmitDepositQuestionnaireService {
+	return &SubmitDepositQuestionnaireService{c: c}
+}
+
 // NewGetDepositAddressService init getting deposit address service
 func (c *Client) NewGetDepositAddressService() *GetDepositsAddressService {
 	return &GetDepositsAddressService{c: c}
