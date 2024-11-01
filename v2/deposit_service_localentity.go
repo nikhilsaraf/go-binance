@@ -188,7 +188,7 @@ func (s *SubmitDepositQuestionnaireService) QuestionnaireJsonUrlEncoded(question
 // Do sends the request.
 func (s *SubmitDepositQuestionnaireService) Do(ctx context.Context) (*SubmitDepositQuestionnaireResponse, error) {
 	r := &request{
-		method:   "GET",
+		method:   "PUT",
 		endpoint: "/sapi/v1/localentity/deposit/provide-info",
 		secType:  secTypeSigned,
 	}
